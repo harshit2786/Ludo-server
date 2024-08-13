@@ -22,10 +22,9 @@ interface Snake {
     player1 : number;
     player2 : number;
   }
-  type player = "player1" | "player2"
   export interface Move {
-    player : player;
-    position : number;
+    player : WebSocket;
+    diceRoll : number;
   }
 
   export interface MoveResponse {

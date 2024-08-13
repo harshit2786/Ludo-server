@@ -7,7 +7,7 @@ export class Game {
     public player2: WebSocket;
     private board: Board;
     private position: Position;
-    private starter: WebSocket;
+    public starter: WebSocket;
     private moves: Move[];
     constructor(player1: WebSocket, player2: WebSocket) {
         this.player1 = player1;
@@ -26,6 +26,7 @@ export class Game {
 
     makeMove(player: WebSocket) {
         const random = Math.ceil(Math.random() * 6);
+        this.moves.push({player:player,diceRoll:random})
         if (random === 6 && (player === this.player1 || player === this.player2)) {
             const playerPosKey = player === this.player1 ? 'player1' : 'player2';
 
