@@ -29,18 +29,21 @@ export class GameManager {
             if(message.type === INIT_GAME){
                 if(this.pendingUser){
                     const game = new Game(this.pendingUser,socket);
-                    this.users.push(socket);
                     this.pendingUser = null;
                     this.games.push(game);
+                    console.log("New game started");
                 }
                 else{
                     this.pendingUser = socket;
-                    this.users.push(socket);
+                    console.log("new user");
                 }
             }
 
             if(message.type === MOVE){
                 const game = this.games.find((g) => g.player1 === socket || g.player2 === socket);
+                if(game){
+                    game.makeMove(socket);
+                }
                 
             }
         })
