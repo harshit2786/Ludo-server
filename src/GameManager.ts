@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
 import { Game } from "./Game";
-import { INIT_GAME, MOVE } from "./messages";
+import { END, INIT_GAME, MOVE, PENDING } from "./messages";
 
 
 export class GameManager {
@@ -35,6 +35,9 @@ export class GameManager {
                 }
                 else{
                     this.pendingUser = socket;
+                    socket.send(JSON.stringify({
+                        type : PENDING,
+                    }))
                     console.log("new user");
                 }
             }
@@ -43,6 +46,15 @@ export class GameManager {
                 const game = this.games.find((g) => g.player1 === socket || g.player2 === socket);
                 if(game){
                     game.makeMove(socket);
+                }
+                
+            }
+            if(message.type === END){
+                const game = this.games.find((g) => g.player1 === socket || g.player2 === socket);
+                if(game){
+                    this.games = this.games.filter((gam) => gam.player1!==socket && gam.player2!==socket);
+                    this.removeUser(game.player1);
+                    this.removeUser(game.player2);
                 }
                 
             }
