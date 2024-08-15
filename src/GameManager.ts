@@ -20,6 +20,15 @@ export class GameManager {
 
     removeUser(socket : WebSocket){
         this.users = this.users.filter(user => user !== socket);
+        if(this.pendingUser === socket){
+            this.pendingUser = null;
+        }
+        const game = this.games.find((g) => g.player1 === socket || g.player2 === socket);
+        if(game){
+            this.games = this.games.filter((gam) => gam.player1!==socket && gam.player2!==socket);
+            this.removeUser(game.player1);
+            this.removeUser(game.player2);
+        }
         // Stop the Game
     }
 
@@ -53,8 +62,8 @@ export class GameManager {
                 const game = this.games.find((g) => g.player1 === socket || g.player2 === socket);
                 if(game){
                     this.games = this.games.filter((gam) => gam.player1!==socket && gam.player2!==socket);
-                    this.removeUser(game.player1);
-                    this.removeUser(game.player2);
+                    const gam = new Game(game.player1,game.player2);
+                    this.games.push(gam);
                 }
                 
             }

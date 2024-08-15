@@ -28,6 +28,7 @@ export class Game {
                     turn : true,
                     yourPos : 0,
                     opponent : 0,
+                    diceRoll : null
                 }
             }))
             this.player1.send(JSON.stringify({
@@ -36,6 +37,7 @@ export class Game {
                     turn : false,
                     yourPos : 0,
                     opponent : 0,
+                    diceRoll : null
                 }
             }))
         }
